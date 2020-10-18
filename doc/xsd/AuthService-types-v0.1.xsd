@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn://x-artefacts-gnivc-ru/ais3/kkt/AuthService/types/1.0" elementFormDefault="qualified" targetNamespace="urn://x-artefacts-gnivc-ru/ais3/kkt/AuthService/types/1.0" version="1.0">
+
+  <xs:element name="AuthServiceFault" type="tns:AuthServiceFault"/>
+
+  <xs:complexType name="AuthServiceFault">
+    <xs:annotation>
+      <xs:documentation>Ошибка сервиса сообщений</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Message" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Сообщение об ошибке</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AuthAppInfo">
+    <xs:annotation>
+      <xs:documentation>Информация о внешнем приложении используещем публичные методы ФНС</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="MasterToken" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Мастер токен сгенерированный приложением с помощью выданого ключа</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="AuthRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="AuthAppInfo" type="tns:AuthAppInfo">
+          <xs:annotation>
+            <xs:documentation>Данные необходимые для авторизации внешнего приложения</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="AuthResponse">
+    <xs:complexType>
+      <xs:sequence>
+	    <xs:element minOccurs="0" maxOccurs="1" name="Result">
+	    	<xs:complexType>
+      			<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="Token" type="xs:string">
+					  <xs:annotation>
+						<xs:documentation>Токен сгенерированный для внешнего приложения</xs:documentation>
+					  </xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="1" maxOccurs="1" name="ExpireTime" type="xs:dateTime">
+					  <xs:annotation>
+						<xs:documentation>Дата и время истечения сгенерерированного токена</xs:documentation>
+					  </xs:annotation>
+					</xs:element>
+				</xs:sequence>
+    		</xs:complexType>
+		</xs:element>
+		<xs:element minOccurs="0" maxOccurs="1" name="Fault" type="tns:AuthServiceFault">
+		</xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

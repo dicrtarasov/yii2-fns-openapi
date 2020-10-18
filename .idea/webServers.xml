@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="11b937bd-3377-4737-a7ec-64f5c3f4ac0f" name="dicr" url="http://dicr.org">
+        <fileTransfer rootFolder="/nfs-openapi" accessType="SFTP" host="hosting.dicr.org" port="22" sshConfigId="3f1f0f5c-c4d9-4f64-aa1c-a4aa5970c981" sshConfig="dicr@hosting.dicr.org:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

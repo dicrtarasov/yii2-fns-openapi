@@ -1,0 +1,203 @@
+<?xml version="1.0" ?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageProviderService/1.0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageProviderService/types/1.0" name="OpenApiAsyncMessageProviderService" targetNamespace="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageProviderService/1.0">
+
+  <!-- AVM: 
+	- Добавить комментарии ко всем типам, методам, константам
+-->
+
+  <wsdl:types>
+
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageProviderService/types/1.0" elementFormDefault="qualified" targetNamespace="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageProviderService/types/1.0" version="1.0">
+
+      <xs:element name="MessageNotFoundFault" type="tns:MessageNotFoundFault"/>
+
+      <xs:complexType name="MessageNotFoundFault">
+        <xs:annotation>
+          <xs:documentation>Сообщение не найдено</xs:documentation>
+        </xs:annotation>
+      </xs:complexType>
+
+      <xs:element name="GetMessageRequest">
+        <xs:complexType>
+          <xs:sequence>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="GetMessageResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="MessageId" type="xs:string">
+              <xs:annotation>
+                <xs:documentation>Идентификатор сообщения</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="1" maxOccurs="1" name="Message">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="##other" processContents="skip"></xs:any>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="AckMessageRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="MessageId" type="xs:string">
+              <xs:annotation>
+                <xs:documentation>Идентификатор подтверждаемого сообщения</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="AckMessageResponse">
+        <xs:complexType>
+          <xs:sequence>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="SendMessageRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="MessageId" type="xs:string">
+              <xs:annotation>
+                <xs:documentation>Идентификатор сообщения</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="Message">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="##other" processContents="skip"></xs:any>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="SendMessageResponse">
+        <xs:complexType>
+          <xs:sequence>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+    </xs:schema>
+
+  </wsdl:types>
+
+  <wsdl:message name="GetMessageResponse">
+    <wsdl:part element="ns1:GetMessageResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="GetMessageRequest">
+    <wsdl:part element="ns1:GetMessageRequest" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="AckMessageRequest">
+    <wsdl:part element="ns1:AckMessageRequest" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="AckMessageResponse">
+    <wsdl:part element="ns1:AckMessageResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="SendMessageRequest">
+    <wsdl:part element="ns1:SendMessageRequest" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="SendMessageResponse">
+    <wsdl:part element="ns1:SendMessageResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="MessageNotFoundException">
+    <wsdl:part element="ns1:MessageNotFoundFault" name="MessageNotFoundException">
+    </wsdl:part>
+  </wsdl:message>
+
+  <wsdl:portType name="OpenApiAsyncMessageProviderServicePortType">
+
+    <wsdl:operation name="GetMessage">
+      <wsdl:input message="tns:GetMessageRequest" name="GetMessageRequest">
+      </wsdl:input>
+      <wsdl:output message="tns:GetMessageResponse" name="GetMessageResponse">
+      </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="AckMessage">
+      <wsdl:input message="tns:AckMessageRequest" name="AckMessageRequest">
+      </wsdl:input>
+      <wsdl:output message="tns:AckMessageResponse" name="AckMessageResponse">
+      </wsdl:output>
+	  <wsdl:fault name="MessageNotFoundException" message="tns:MessageNotFoundException"/>
+    </wsdl:operation>
+
+    <wsdl:operation name="SendMessage">
+      <wsdl:input message="tns:SendMessageRequest" name="SendMessageRequest">
+      </wsdl:input>
+      <wsdl:output message="tns:SendMessageResponse" name="SendMessageResponse">
+      </wsdl:output>
+	  <wsdl:fault name="MessageNotFoundException" message="tns:MessageNotFoundException"/>
+    </wsdl:operation>
+
+  </wsdl:portType>
+
+  <wsdl:binding name="OpenApiAsyncMessageProviderServiceSoapBinding" type="tns:OpenApiAsyncMessageProviderServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"></soap:binding>
+
+    <wsdl:operation name="GetMessage">
+      <soap:operation soapAction="urn:GetMessageRequest" style="document"></soap:operation>
+      <wsdl:input name="GetMessageRequest">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="GetMessageResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="AckMessage">
+      <soap:operation soapAction="urn:AckMessageRequest" style="document"></soap:operation>
+      <wsdl:input name="AckMessageRequest">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="AckMessageResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+      <wsdl:fault name="MessageNotFoundException">
+        <soap:fault name="MessageNotFoundException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="SendMessage">
+      <soap:operation soapAction="urn:SendMessageRequest" style="document"></soap:operation>
+      <wsdl:input name="SendMessageRequest">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="SendMessageResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+      <wsdl:fault name="MessageNotFoundException">
+        <soap:fault name="MessageNotFoundException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:service name="OpenApiAsyncMessageProviderService">
+    <wsdl:port binding="tns:OpenApiAsyncMessageProviderServiceSoapBinding" name="OpenApiAsyncMessageProviderServiceEndpoint">
+      <soap:address location="http://server:port/open-api/system/subsystem/external_system_namespace"></soap:address>
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions>

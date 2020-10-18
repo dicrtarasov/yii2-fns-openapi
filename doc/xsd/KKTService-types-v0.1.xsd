@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn://x-artefacts-gnivc-ru/ais3/kkt/KktTicketService/types/1.0" elementFormDefault="qualified" targetNamespace="urn://x-artefacts-gnivc-ru/ais3/kkt/KktTicketService/types/1.0" version="1.0">
+
+	<xs:element name="KktTicketServiceFault" type="tns:KktTicketServiceFault"/>
+
+	<xs:complexType name="KktTicketServiceFault">
+		<xs:annotation>
+			<xs:documentation>Ошибка сервиса ККТ</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="1" name="Message" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Сообщение об ошибке</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CheckTicketInfo">
+		<xs:annotation>
+			<xs:documentation>Информация о ФД, необходимая для его проверки</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="1" name="Sum" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>Сумма чека в копейках</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="1" maxOccurs="1" name="Date" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Дата и время операции в формате yyyy-MM-dd'T'HH':'mm':'ss</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="1" maxOccurs="1" name="Fn" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Номер ФН</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="1" maxOccurs="1" name="TypeOperation" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>Тип операции (Приход, Возврат прихода, Расход, Возврат расхода)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="1" maxOccurs="1" name="FiscalDocumentId" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>Порядковый номер ФД</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="1" maxOccurs="1" name="FiscalSign" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Фискальный признак документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="GetTicketInfo">
+		<xs:annotation>
+			<xs:documentation>Информация о ФД, необходимая для его получения</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="1" name="Sum" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>Сумма чека в копейках</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="1" maxOccurs="1" name="Date" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Дата и время операции в формате yyyy-MM-dd'T'HH':'mm':'ss</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="1" maxOccurs="1" name="Fn" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Номер ФН</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="1" maxOccurs="1" name="TypeOperation" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>Тип операции (Приход, Возврат прихода, Расход, Возврат расхода)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="1" maxOccurs="1" name="FiscalDocumentId" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>Порядковый номер ФД</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="1" maxOccurs="1" name="FiscalSign" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Фискальный признак документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="GeoInfo">
+		<xs:annotation>
+			<xs:documentation>Информация о местоположении пользователя во время выполнения запроса</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="1" name="Latitude" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>Широта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="1" maxOccurs="1" name="Longitude" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>Долгота</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="CheckTicketRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CheckTicketInfo" type="tns:CheckTicketInfo">
+					<xs:annotation>
+						<xs:documentation>Данные, необходимые для проверки ФД</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="GeoInfo" type="tns:GeoInfo">
+					<xs:annotation>
+						<xs:documentation>Геокоординаты места запроса на проверку ФД</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="CheckTicketResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="1" name="Result">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="Code" type="xs:integer">
+								<xs:annotation>
+									<xs:documentation>Код возврата: 200; 400; 406; 503;</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="1" maxOccurs="1" name="Message" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>
+										Cообщение пользователю
+										если 200, то "Отправленные данные корректны"
+										если 400, то "Формат отправленных данных некорректен"
+										если 406, то "Данные не прошли проверку"
+										если 503, то "Сервис недоступен".
+									</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetTicketRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="GetTicketInfo" type="tns:GetTicketInfo">
+					<xs:annotation>
+						<xs:documentation>Данные, необходимые для получения ФД</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="GeoInfo" type="tns:GeoInfo">
+					<xs:annotation>
+						<xs:documentation>Геокоординаты места запроса на получение ФД</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="GetTicketResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="1" name="Result">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element minOccurs="1" maxOccurs="1" name="Code" type="xs:integer">
+								<xs:annotation>
+									<xs:documentation>Код возврата: 200; 400; 404; 406; 503;</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" maxOccurs="1" name="Ticket" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>Содержимое ФД, если код возврата равен 200</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element minOccurs="0" maxOccurs="1" name="Message" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>
+										Cообщение пользователю при возникновении ошибки
+										если 400, то "Формат отправленных данных некорректен"
+										если 404, то "Чек не найден"
+										если 406, то "Данные не прошли проверку"
+										если 503, то "Сервис недоступен".
+									</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element minOccurs="0" maxOccurs="1" name="Fault" type="tns:KktTicketServiceFault">
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>

@@ -1,0 +1,82 @@
+<?xml version="1.0" ?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/1.0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/types/1.0" name="OpenApiMessageConsumerService" targetNamespace="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/1.0">
+
+  <wsdl:types>
+
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/types/1.0" elementFormDefault="qualified" targetNamespace="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/types/1.0" version="1.0">
+	  
+      <xs:element name="GetMessageRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="Message">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="##other" processContents="skip"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="GetMessageResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element  minOccurs="0" maxOccurs="1" name="Message">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="##other" processContents="skip"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+    </xs:schema>
+
+  </wsdl:types>
+
+  <wsdl:message name="GetMessageResponse">
+    <wsdl:part element="ns1:GetMessageResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="GetMessageRequest">
+    <wsdl:part element="ns1:GetMessageRequest" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+
+  <wsdl:portType name="OpenApiMessageConsumerServicePortType">
+
+    <wsdl:operation name="GetMessage">
+      <wsdl:input message="tns:GetMessageRequest" name="GetMessageRequest">
+      </wsdl:input>
+      <wsdl:output message="tns:GetMessageResponse" name="GetMessageResponse">
+      </wsdl:output>
+    </wsdl:operation>
+
+  </wsdl:portType>
+
+  <wsdl:binding name="OpenApiMessageConsumerServiceSoapBinding" type="tns:OpenApiMessageConsumerServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"></soap:binding>
+
+    <wsdl:operation name="GetMessage">
+      <soap:operation soapAction="urn:GetMessageRequest" style="document"></soap:operation>
+      <wsdl:input name="GetMessageRequest">
+        <soap:body use="literal"></soap:body>
+      </wsdl:input>
+      <wsdl:output name="GetMessageResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+	
+  </wsdl:binding>
+
+  <wsdl:service name="OpenApiMessageConsumerService">
+    <wsdl:port binding="tns:OpenApiMessageConsumerServiceSoapBinding" name="OpenApiMessageConsumerServiceEndpoint">
+      <soap:address location="http://server:port/open-api/system/subsystem/external_system_namespace"></soap:address>
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions>

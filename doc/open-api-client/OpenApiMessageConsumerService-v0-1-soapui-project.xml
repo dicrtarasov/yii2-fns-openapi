@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="e4eb11a3-5bb1-4d92-8f14-a511ddf39c21" activeEnvironment="Default" name="OpenApiMessageConsumerService-v0.1" resourceRoot="" soapui-version="5.3.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="2d2e9023-7903-43fb-8936-a731c0f43144" wsaVersion="NONE" name="OpenApiMessageConsumerServiceSoapBinding" type="wsdl" bindingName="{urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/1.0}OpenApiMessageConsumerServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="file:/C:/Git/gnivc/InPlat/open-api/Consumer-Provider/OpenApiMessageConsumerService-v0.1.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:\C:\Git\gnivc\InPlat\open-api\Consumer-Provider\OpenApiMessageConsumerService-v0.1.wsdl"><con:part><con:url>file:\C:\Git\gnivc\InPlat\open-api\Consumer-Provider\OpenApiMessageConsumerService-v0.1.wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="OpenApiMessageConsumerService" targetNamespace="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/1.0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/types/1.0">
+  <!--AVM: 
+	- Добавить комментарии ко всем типам, методам, константам-->
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/types/1.0" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/types/1.0">
+      <xs:simpleType name="ProcessingStatuses">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="PROCESSING"/>
+          <xs:enumeration value="COMPLETED"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="GetMessageRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="Message">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="##other" processContents="skip"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetMessageResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Message">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="##other" processContents="skip"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="GetMessageResponse">
+    <wsdl:part element="ns1:GetMessageResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetMessageRequest">
+    <wsdl:part element="ns1:GetMessageRequest" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="OpenApiMessageConsumerServicePortType">
+    <wsdl:operation name="GetMessage">
+      <wsdl:input message="tns:GetMessageRequest" name="GetMessageRequest"></wsdl:input>
+      <wsdl:output message="tns:GetMessageResponse" name="GetMessageResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="OpenApiMessageConsumerServiceSoapBinding" type="tns:OpenApiMessageConsumerServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetMessage">
+      <soap:operation soapAction="urn:GetMessageRequest" style="document"/>
+      <wsdl:input name="GetMessageRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="GetMessageResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="OpenApiMessageConsumerService">
+    <wsdl:port binding="tns:OpenApiMessageConsumerServiceSoapBinding" name="OpenApiMessageConsumerServiceEndpoint">
+      <soap:address location="http://server:port/open-api/system/subsystem/external_system_namespace"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://g9900-wscit-17:8088/mockOpenApiMessageConsumerServiceSoapBinding</con:endpoint><con:endpoint>http://server:port/open-api/system/subsystem/external_system_namespace</con:endpoint></con:endpoints><con:operation id="87a1e6ed-ffe6-456f-97b6-583ad006c733" isOneWay="false" action="urn:GetMessageRequest" name="GetMessage" bindingOperationName="GetMessage" type="Request-Response" outputName="GetMessageResponse" inputName="GetMessageRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="7651a278-87c5-4901-948f-29d1d2b889ee" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://server:port/open-api/system/subsystem/external_system_namespace</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/types/1.0">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ns:GetMessageRequest>\r
+         <ns:Message>\r
+            <!--You may enter ANY elements at this point-->\r
+         </ns:Message>\r
+      </ns:GetMessageRequest>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:GetMessageRequest"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:mockService id="c5e4ca23-796e-4fbe-802d-d2eccb89b720" port="8088" path="/mockOpenApiMessageConsumerServiceSoapBinding" host="g9900-wscit-17" name="OpenApiMessageConsumerServiceSoapBinding MockService"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-action">false</con:setting></con:settings><con:properties/><con:mockOperation name="GetMessage" id="8be47ddb-0d36-4bc0-9a4c-52b2b3e9edac" interface="OpenApiMessageConsumerServiceSoapBinding" operation="GetMessage"><con:settings/><con:defaultResponse>Response 1</con:defaultResponse><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:response name="Response 1" id="e9cb056b-ac62-4a68-90cc-3fb9a5abcada" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/types/1.0">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns:GetMessageResponse>
+         <!--Optional:-->
+         <ns:Message>
+         		
+         		<!-- Аутентификация пройдена -->
+            	<tns:AuthResponse xmlns:tns="urn://x-artefacts-gnivc-ru/ais3/kkt/AuthService/types/1.0" >
+				<tns:Result>
+					<tns:Token>TEMPORARY_TOKEN_ISSUED_BY_FNS</tns:Token>
+					<tns:ExpireTime>2001-12-17T09:30:47Z</tns:ExpireTime>
+				</tns:Result>
+            	</tns:AuthResponse>
+
+			<!-- В результате аутентификации произошли ошибки -->
+			<!--tns:AuthResponse xmlns:tns="urn://x-artefacts-gnivc-ru/ais3/kkt/AuthService/types/1.0" >
+				<tns:Fault>
+				  <tns:Message>Описание ошибки сервиса</tns:Message>
+				</tns:Fault>
+            	</tns:AuthResponse-->
+            	
+         </ns:Message>
+      </ns:GetMessageResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:GetMessageRequest"/></con:response><con:dispatchConfig/></con:mockOperation></con:mockService><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>

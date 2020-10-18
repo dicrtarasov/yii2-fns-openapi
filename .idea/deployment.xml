@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" promptOnRemoteOverwrite="CHECK_TIMESTAMP" serverName="dicr" overwriteAll="false" deleteMissingItems="true" createEmptyFolders="true" traceLevel="ERRORS" exclude=".svn;.idea;.git;.gitignore;composer.json;*.phar" autoUploadExternalChanges="true" notifyRemoteChanges="true">
+    <serverData>
+      <paths name="dicr">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath path="/doc" />
+            <excludedPath path="/runtime" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>

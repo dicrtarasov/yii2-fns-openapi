@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="0be2d188-cc45-4b75-878a-8aa14638a9ec" activeEnvironment="Default" name="OpenApiAsyncMessageConsumerService-v0.1" resourceRoot="" soapui-version="5.3.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="149d7e92-95a6-47e2-8cd3-6381480505be" wsaVersion="NONE" name="OpenApiAsyncMessageConsumerServiceSoapBinding" type="wsdl" bindingName="{urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageConsumerService/1.0}OpenApiAsyncMessageConsumerServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="file:/C:/Git/gnivc/InPlat/open-api/Consumer-Provider/OpenApiAsyncMessageConsumerService-v0.1.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:\C:\Git\gnivc\InPlat\open-api\Consumer-Provider\OpenApiAsyncMessageConsumerService-v0.1.wsdl"><con:part><con:url>file:\C:\Git\gnivc\InPlat\open-api\Consumer-Provider\OpenApiAsyncMessageConsumerService-v0.1.wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="OpenApiAsyncMessageConsumerService" targetNamespace="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageConsumerService/1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageConsumerService/1.0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageConsumerService/types/1.0">
+  <!--AVM: 
+	- Добавить комментарии ко всем типам, методам, константам-->
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageConsumerService/types/1.0" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageConsumerService/types/1.0">
+      <xs:element name="MessageNotFoundFault" type="tns:MessageNotFoundFault"/>
+      <xs:complexType name="MessageNotFoundFault">
+        <xs:annotation>
+          <xs:documentation>Сообщение не найдено</xs:documentation>
+        </xs:annotation>
+      </xs:complexType>
+      <xs:simpleType name="ProcessingStatuses">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="PROCESSING"/>
+          <xs:enumeration value="COMPLETED"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="GetMessageRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="MessageId" type="xs:string">
+              <xs:annotation>
+                <xs:documentation>Идентификатор сообщения</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetMessageResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="ProcessingStatus" type="tns:ProcessingStatuses"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Message">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="##other" processContents="skip"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SendMessageRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="Message">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="##other" processContents="skip"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SendMessageResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="1" name="MessageId" type="xs:string">
+              <xs:annotation>
+                <xs:documentation>Идентификатор сообщения</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="GetMessageResponse">
+    <wsdl:part element="ns1:GetMessageResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetMessageRequest">
+    <wsdl:part element="ns1:GetMessageRequest" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="SendMessageRequest">
+    <wsdl:part element="ns1:SendMessageRequest" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="SendMessageResponse">
+    <wsdl:part element="ns1:SendMessageResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="MessageNotFoundException">
+    <wsdl:part element="ns1:MessageNotFoundFault" name="MessageNotFoundException"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="OpenApiAsyncMessageConsumerServicePortType">
+    <wsdl:operation name="GetMessage">
+      <wsdl:input message="tns:GetMessageRequest" name="GetMessageRequest"></wsdl:input>
+      <wsdl:output message="tns:GetMessageResponse" name="GetMessageResponse"></wsdl:output>
+      <wsdl:fault name="MessageNotFoundException" message="tns:MessageNotFoundException"/>
+    </wsdl:operation>
+    <wsdl:operation name="SendMessage">
+      <wsdl:input message="tns:SendMessageRequest" name="SendMessageRequest"></wsdl:input>
+      <wsdl:output message="tns:SendMessageResponse" name="SendMessageResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="OpenApiAsyncMessageConsumerServiceSoapBinding" type="tns:OpenApiAsyncMessageConsumerServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetMessage">
+      <soap:operation soapAction="urn:GetMessageRequest" style="document"/>
+      <wsdl:input name="GetMessageRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="GetMessageResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="MessageNotFoundException">
+        <soap:fault name="MessageNotFoundException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SendMessage">
+      <soap:operation soapAction="urn:SendMessageRequest" style="document"/>
+      <wsdl:input name="SendMessageRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="SendMessageResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="OpenApiAsyncMessageConsumerService">
+    <wsdl:port binding="tns:OpenApiAsyncMessageConsumerServiceSoapBinding" name="OpenApiAsyncMessageConsumerServiceEndpoint">
+      <soap:address location="http://server:port/open-api/system/subsystem/external_system_namespace"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://g9900-wscit-17:8088/mockOpenApiAsyncMessageConsumerServiceSoapBinding</con:endpoint><con:endpoint>http://server:port/open-api/system/subsystem/external_system_namespace</con:endpoint></con:endpoints><con:operation id="ce7afe2b-ae83-49d2-b721-fb8efb459909" isOneWay="false" action="urn:GetMessageRequest" name="GetMessage" bindingOperationName="GetMessage" type="Request-Response" outputName="GetMessageResponse" inputName="GetMessageRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="683ac797-55dc-4b3a-8bec-d8b5891b683d" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8088/mockOpenApiAsyncMessageConsumerServiceSoapBinding</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageConsumerService/types/1.0">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ns:GetMessageRequest>\r
+         <ns:MessageId>e44f95d6-adcd-11e7-abc4-cec278b6b50a</ns:MessageId>\r
+      </ns:GetMessageRequest>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:GetMessageRequest"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="5a533f28-8303-4676-a307-72209f6d3493" isOneWay="false" action="urn:SendMessageRequest" name="SendMessage" bindingOperationName="SendMessage" type="Request-Response" outputName="SendMessageResponse" inputName="SendMessageRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="7753027c-84d1-4749-9249-e4b6d11a536b" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8088/mockOpenApiAsyncMessageConsumerServiceSoapBinding</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageConsumerService/types/1.0">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <ns:SendMessageRequest>\r
+         <ns:Message>\r
+            <!--You may enter ANY elements at this point-->\r
+         </ns:Message>\r
+      </ns:SendMessageRequest>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:SendMessageRequest"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:mockService id="0278f3a9-efc7-47d3-85bf-5513494ad9ba" port="8088" path="/mockOpenApiAsyncMessageConsumerServiceSoapBinding" host="g9900-wscit-17" name="OpenApiAsyncMessageConsumerServiceSoapBinding MockService" bindToHostOnly="false" docroot=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-action">false</con:setting></con:settings><con:properties/><con:mockOperation name="GetMessage" id="857e0be6-83ec-457e-83fc-06e7faa3a9f3" interface="OpenApiAsyncMessageConsumerServiceSoapBinding" operation="GetMessage"><con:settings/><con:defaultResponse>Response 1</con:defaultResponse><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:response name="Response 1" id="4ec86daf-f776-4a89-9a0f-2edb597cf356" httpResponseStatus="500" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageConsumerService/types/1.0">
+   <soapenv:Header/>
+   <soapenv:Body>
+	
+	<!-- Обрабатывается -->
+      <!--ns:GetMessageResponse>
+         <ns:ProcessingStatus>PROCESSING</ns:ProcessingStatus>
+         <ns:Message>
+         </ns:Message>
+      </ns:GetMessageResponse-->
+	
+	 <!-- Обработан -->
+	 <ns:GetMessageResponse>
+		<ns:ProcessingStatus>COMPLETED</ns:ProcessingStatus>
+		<ns:Message>
+			<CheckTicketResponse xmlns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageConsumerService/types/1.0">
+			</CheckTicketResponse>
+		</ns:Message>
+	 </ns:GetMessageResponse>
+	
+	<!-- Сообщение не найдено -->
+	<!--soapenv:Fault>
+		<faultcode>soapenv:Server</faultcode>
+		<faultstring>Сообщение не найдено</faultstring>
+		<detail>
+		  <MessageNotFoundFault xmlns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageConsumerService/types/1.0"/>
+		</detail>
+	</soapenv:Fault-->
+
+	<!-- Ошибка проверки подлинности -->
+	<!--soapenv:Fault>
+		<faultcode>soapenv:Server</faultcode>
+		<faultstring>Ошибка проверки подлинности</faultstring>
+		<detail>
+		  <AuthenticationFault xmlns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageConsumerService/types/1.0"/>
+		</detail>
+	</soapenv:Fault-->
+	
+  	<!-- Внутренняя серверная ошибка -->
+  	<!--soapenv:Fault>
+  		<faultcode>soapenv:Server</faultcode>
+		<faultstring>Внутренняя серверная ошибка</faultstring>
+	</soapenv:Fault-->
+
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:GetMessageRequest"/></con:response><con:dispatchConfig/></con:mockOperation><con:mockOperation name="SendMessage" id="d3cf6091-c9fe-4c1c-b7fd-529f6c512889" interface="OpenApiAsyncMessageConsumerServiceSoapBinding" operation="SendMessage"><con:settings/><con:defaultResponse>Response 1</con:defaultResponse><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:response name="Response 1" id="02fd54db-6f55-4cca-8f3f-7871a7589be3" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageConsumerService/types/1.0">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns:SendMessageResponse>
+         <ns:MessageId>e44f95d6-adcd-11e7-abc4-cec278b6b50a</ns:MessageId>
+      </ns:SendMessageResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:SendMessageRequest"/></con:response><con:dispatchConfig/></con:mockOperation></con:mockService><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>

@@ -1,0 +1,7 @@
+<component name="CopyrightManager">
+  <copyright>
+    <option name="allowReplaceRegexp" value="dicr" />
+    <option name="notice" value="@copyright 2019-&amp;#36;today.year Dicr http://dicr.org&#10;@author Igor A Tarasov &lt;develop@dicr.org&gt;&#10;@license MIT&#10;@version &amp;#36;file.lastModified.format(&quot;dd.MM.yy HH:mm:ss&quot;)" />
+    <option name="myName" value="dicr" />
+  </copyright>
+</component>
