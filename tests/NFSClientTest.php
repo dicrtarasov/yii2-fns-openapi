@@ -3,14 +3,16 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 01.11.20 07:53:19
+ * @version 01.11.20 08:49:28
  */
 
 declare(strict_types = 1);
 namespace dicr\tests;
 
 use dicr\fns\openapi\FNSClient;
-use dicr\fns\openapi\types\TicketInfo;
+use dicr\fns\openapi\types\CheckTicketInfo;
+use dicr\fns\openapi\types\GetTicketInfo;
+use dicr\fns\openapi\types\TypeOperation;
 use PHPUnit\Framework\TestCase;
 use Yii;
 use yii\base\Exception;
@@ -29,7 +31,7 @@ class NFSClientTest extends TestCase
         'Sum' => 103800,
         'Date' => '2020-08-01T13:50:00',
         'Fn' => '9280440300813769',
-        'TypeOperation' => TicketInfo::TYPE_OP_INCOME,
+        'TypeOperation' => TypeOperation::INCOME,
         'FiscalDocumentId' => 2545,
         'FiscalSign' => 2820563972
     ];
@@ -42,7 +44,7 @@ class NFSClientTest extends TestCase
         'Sum' => 97799,
         'Date' => '2020-08-20T13:55:00',
         'Fn' => '9280440300703871',
-        'TypeOperation' => TicketInfo::TYPE_OP_INCOME,
+        'TypeOperation' => TypeOperation::INCOME,
         'FiscalDocumentId' => 17663,
         'FiscalSign' => 3955696418
     ];
@@ -52,7 +54,7 @@ class NFSClientTest extends TestCase
         'Sum' => 79800,
         'Date' => '2017-09-26T18:25:00',
         'Fn' => '8710000100620128',
-        'TypeOperation' => TicketInfo::TYPE_OP_INCOME,
+        'TypeOperation' => TypeOperation::INCOME,
         'FiscalDocumentId' => 58518,
         'FiscalSign' => 957304760
     ];
@@ -86,7 +88,7 @@ class NFSClientTest extends TestCase
     public function testCheck() : void
     {
         $fnsClient = self::client();
-        $checkTicketResult = $fnsClient->checkTicket(new TicketInfo(self::TICKET_INFO2));
+        $checkTicketResult = $fnsClient->checkTicket(new CheckTicketInfo(self::TICKET_INFO1));
 
         self::assertSame(200, $checkTicketResult->Code);
         echo 'Код: ' . $checkTicketResult->Code . "\n";
@@ -99,7 +101,7 @@ class NFSClientTest extends TestCase
     public function testGet() : void
     {
         $fnsClient = self::client();
-        $checkTicketResult = $fnsClient->getTicket(new TicketInfo(self::TICKET_INFO2));
+        $checkTicketResult = $fnsClient->getTicket(new GetTicketInfo(self::TICKET_INFO1));
         self::assertIsArray($checkTicketResult->Ticket);
     }
 }
