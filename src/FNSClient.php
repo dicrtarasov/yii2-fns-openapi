@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 01.11.20 03:36:46
+ * @version 01.11.20 06:20:44
  */
 
 declare(strict_types = 1);
@@ -14,12 +14,14 @@ use dicr\fns\openapi\types\AuthenticationFault;
 use dicr\fns\openapi\types\AuthRequest;
 use dicr\fns\openapi\types\AuthResponse;
 use dicr\fns\openapi\types\AuthServiceFault;
+use dicr\fns\openapi\types\CheckTicketInfo;
 use dicr\fns\openapi\types\CheckTicketRequest;
 use dicr\fns\openapi\types\CheckTicketResponse;
 use dicr\fns\openapi\types\CheckTicketResult;
 use dicr\fns\openapi\types\GeoInfo;
 use dicr\fns\openapi\types\GetMessageRequest;
 use dicr\fns\openapi\types\GetMessageResponse;
+use dicr\fns\openapi\types\GetTicketInfo;
 use dicr\fns\openapi\types\GetTicketRequest;
 use dicr\fns\openapi\types\GetTicketResponse;
 use dicr\fns\openapi\types\GetTicketResult;
@@ -40,6 +42,7 @@ use yii\base\InvalidConfigException;
 use function stream_context_create;
 use function strtotime;
 
+use const SOAP_1_1;
 use const SOAP_COMPRESSION_ACCEPT;
 use const SOAP_COMPRESSION_DEFLATE;
 use const SOAP_COMPRESSION_GZIP;
@@ -67,13 +70,13 @@ class FNSClient extends Component
 
         // проверка чека
         'CheckTicketRequest' => CheckTicketRequest::class,
-        'CheckTicketInfo' => TicketInfo::class,
+        'CheckTicketInfo' => CheckTicketInfo::class,
         'CheckTicketResponse' => CheckTicketResponse::class,
         'CheckTicketResult' => CheckTicketResult::class,
 
         // получение информации по чеку
         'GetTicketRequest' => GetTicketRequest::class,
-        'GetTicketInfo' => TicketInfo::class,
+        'GetTicketInfo' => GetTicketInfo::class,
         'GetTicketResponse' => GetTicketResponse::class,
         'GetTicketResult' => GetTicketResult::class,
 
@@ -123,18 +126,21 @@ class FNSClient extends Component
             'http' => [
                 // HTTP-заголовки авторизации
                 'header' => empty($token) ? [] : [
-                    'FNS-OpenApi-Token' => $token
+                    'FNS-OpenApi-Token' => $token,
                 ]
             ]
         ]);
 
+        ini_set('soap.wsdl_cache_ttl', 0);
+
         // клиент SOAP
-        return new SoapClient($this->url . $wsdl, [
+        return new SoapClient($wsdl ? $this->url . $wsdl : null, [
             'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
-            'trace' => 1,
+            'trace' => true,
             'exceptions' => true,
             'context' => $streamContext,
-            'classmap' => self::CLASS_MAP
+            'classmap' => self::CLASS_MAP,
+            'soap_version' => SOAP_1_1
         ]);
     }
 
@@ -153,20 +159,22 @@ class FNSClient extends Component
         if (empty($token)) {
             $soapClient = $this->soapClient('/open-api/AuthService/0.1?wsdl');
 
-            /** @noinspection PhpUndefinedMethodInspection */
-            /** @var GetMessageResponse $messageResponse */
-            $messageResponse = $soapClient->GetMessage(new GetMessageRequest([
-                'Message' => new Message([
-                    'any' => new AuthRequest([
-                        'AuthAppInfo' => new AuthAppInfo([
-                            'MasterToken' => $this->masterToken
+            try {
+                /** @noinspection PhpUndefinedMethodInspection */
+                /** @var GetMessageResponse $messageResponse */
+                $messageResponse = $soapClient->GetMessage(new GetMessageRequest([
+                    'Message' => new Message([
+                        'any' => new AuthRequest([
+                            'AuthAppInfo' => new AuthAppInfo([
+                                'MasterToken' => $this->masterToken
+                            ])
                         ])
                     ])
-                ])
-            ]));
-
-            Yii::debug('Запрос: ' . $soapClient->__getLastRequest(), __METHOD__);
-            Yii::debug('Ответ: ' . $soapClient->__getLastResponse(), __METHOD__);
+                ]));
+            } finally {
+                Yii::debug('Запрос: ' . $soapClient->__getLastRequest(), __METHOD__);
+                Yii::debug('Ответ: ' . $soapClient->__getLastResponse(), __METHOD__);
+            }
 
             $xml = new SimpleXMLElement($messageResponse->Message->any ?? '');
 
@@ -191,22 +199,32 @@ class FNSClient extends Component
         return $token;
     }
 
-    public function checkTicket(TicketInfo $ticketInfo) : CheckTicketResponse
+    /**
+     * Проверка чека.
+     *
+     * @param CheckTicketInfo $ticketInfo
+     * @return CheckTicketResponse
+     * @throws Exception
+     * @throws SoapFault
+     */
+    public function checkTicket(CheckTicketInfo $ticketInfo) : CheckTicketResponse
     {
-        $soapClient = $this->soapClient('/open-api/ais3/KktService/0.1?wsdl', $this->authToken());
+        $soapClient = $this->soapClient('' /*'/open-api/ais3/KktService/0.1?wsdl'*/, $this->authToken());
 
-        /** @noinspection PhpUndefinedMethodInspection */
-        /** @var SendMessageResponse $messageResponse */
-        $messageResponse = $soapClient->SendMessage(new SendMessageRequest([
-            'Message' => new Message([
-                'any' => new CheckTicketRequest([
-                    'CheckTicketInfo' => $ticketInfo
+        try {
+            /** @noinspection PhpUndefinedMethodInspection */
+            /** @var SendMessageResponse $messageResponse */
+            $messageResponse = $soapClient->SendMessage(new SendMessageRequest([
+                'Message' => new Message([
+                    'any' => new CheckTicketRequest([
+                        'CheckTicketInfo' => $ticketInfo
+                    ])
                 ])
-            ])
-        ]));
-
-        Yii::debug('Запрос: ' . $soapClient->__getLastRequest(), __METHOD__);
-        Yii::debug('Ответ: ' . $soapClient->__getLastResponse(), __METHOD__);
+            ]));
+        } finally {
+            Yii::debug('Запрос: ' . $soapClient->__getLastRequest(), __METHOD__);
+            Yii::debug('Ответ: ' . $soapClient->__getLastResponse(), __METHOD__);
+        }
 
         var_dump($messageResponse);
         exit;
