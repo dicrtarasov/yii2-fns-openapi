@@ -3,87 +3,35 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 01.11.20 03:36:46
+ * @version 01.11.20 04:59:47
  */
 
 declare(strict_types = 1);
 namespace dicr\fns\openapi;
 
-use dicr\fns\openapi\types\AuthAppInfo;
-use dicr\fns\openapi\types\AuthenticationFault;
-use dicr\fns\openapi\types\AuthRequest;
-use dicr\fns\openapi\types\AuthResponse;
-use dicr\fns\openapi\types\AuthServiceFault;
-use dicr\fns\openapi\types\CheckTicketRequest;
 use dicr\fns\openapi\types\CheckTicketResponse;
-use dicr\fns\openapi\types\CheckTicketResult;
-use dicr\fns\openapi\types\GeoInfo;
-use dicr\fns\openapi\types\GetMessageRequest;
-use dicr\fns\openapi\types\GetMessageResponse;
-use dicr\fns\openapi\types\GetTicketRequest;
-use dicr\fns\openapi\types\GetTicketResponse;
-use dicr\fns\openapi\types\GetTicketResult;
-use dicr\fns\openapi\types\KktTicketServiceFault;
-use dicr\fns\openapi\types\Message;
-use dicr\fns\openapi\types\MessageNotFoundFault;
-use dicr\fns\openapi\types\SendMessageRequest;
-use dicr\fns\openapi\types\SendMessageResponse;
 use dicr\fns\openapi\types\TicketInfo;
+use dicr\helper\Html;
 use SimpleXMLElement;
-use SoapClient;
-use SoapFault;
 use Yii;
 use yii\base\Component;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
+use yii\httpclient\Client;
 
-use function stream_context_create;
+use function ob_get_clean;
+use function ob_start;
 use function strtotime;
-
-use const SOAP_COMPRESSION_ACCEPT;
-use const SOAP_COMPRESSION_DEFLATE;
-use const SOAP_COMPRESSION_GZIP;
 
 /**
  * Клиент ФНС OpenAPI.
+ *
+ * @property-read Client $httpClient
  */
 class FNSClient extends Component
 {
     /** @var string */
     public const API_URL = 'https://openapi.nalog.ru:8090';
-
-    /** @var string[] карта соответствия типов XML SOAP классам PHP */
-    public const CLASS_MAP = [
-        // запрос-ответ
-        'GetMessageRequest' => GetMessageRequest::class,
-        'GetMessageResponse' => GetMessageResponse::class,
-        'Message' => Message::class,
-
-        // авторизация
-        'AuthRequest' => AuthRequest::class,
-        'AuthAppInfo' => AuthAppInfo::class,
-        'AuthResponse' => AuthResponse::class,
-        'AuthServiceFault' => AuthServiceFault::class,
-
-        // проверка чека
-        'CheckTicketRequest' => CheckTicketRequest::class,
-        'CheckTicketInfo' => TicketInfo::class,
-        'CheckTicketResponse' => CheckTicketResponse::class,
-        'CheckTicketResult' => CheckTicketResult::class,
-
-        // получение информации по чеку
-        'GetTicketRequest' => GetTicketRequest::class,
-        'GetTicketInfo' => TicketInfo::class,
-        'GetTicketResponse' => GetTicketResponse::class,
-        'GetTicketResult' => GetTicketResult::class,
-
-        'KktTicketServiceFault' => KktTicketServiceFault::class,
-        'GeoInfo' => GeoInfo::class,
-
-        'MessageNotFoundFault' => MessageNotFoundFault::class,
-        'AuthenticationFault' => AuthenticationFault::class,
-        'SendMessageRequest' => SendMessageRequest::class
-    ];
 
     /** @var string URL API */
     public $url = self::API_URL;
@@ -108,34 +56,23 @@ class FNSClient extends Component
         }
     }
 
-    /**
-     * Создает SOAP-клиент.
-     *
-     * @param string $wsdl относительный адрес WSDL
-     * @param ?string $token токен авторизации
-     * @return SoapClient
-     * @throws SoapFault
-     */
-    public function soapClient(string $wsdl, ?string $token = null) : SoapClient
-    {
-        // контекст HTTP
-        $streamContext = stream_context_create([
-            'http' => [
-                // HTTP-заголовки авторизации
-                'header' => empty($token) ? [] : [
-                    'FNS-OpenApi-Token' => $token
-                ]
-            ]
-        ]);
+    /** @var Client */
+    private $_httpClient;
 
-        // клиент SOAP
-        return new SoapClient($this->url . $wsdl, [
-            'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
-            'trace' => 1,
-            'exceptions' => true,
-            'context' => $streamContext,
-            'classmap' => self::CLASS_MAP
-        ]);
+    /**
+     * HTTP-клиент.
+     *
+     * @return Client
+     */
+    public function getHttpClient() : Client
+    {
+        if ($this->_httpClient === null) {
+            $this->_httpClient = new Client([
+                'baseUrl' => $this->url
+            ]);
+        }
+
+        return $this->_httpClient;
     }
 
     /**
@@ -143,49 +80,65 @@ class FNSClient extends Component
      *
      * @return string
      * @throws Exception
-     * @throws SoapFault
      */
     public function authToken() : string
     {
-        $key = [__CLASS__, $this->url, $this->masterToken];
-
+        $key = [__METHOD__, $this->url, $this->masterToken];
         $token = Yii::$app->cache->get($key);
         if (empty($token)) {
-            $soapClient = $this->soapClient('/open-api/AuthService/0.1?wsdl');
+            ob_start();
+            ?>
+            <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                              xmlns:ns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/types/1.0"
+            >
+                <soapenv:Header/>
+                <soapenv:Body>
+                    <ns:GetMessageRequest>
+                        <ns:Message>
+                            <tns:AuthRequest xmlns:tns="urn://x-artefacts-gnivc-ru/ais3/kkt/AuthService/types/1.0">
+                                <tns:AuthAppInfo>
+                                    <tns:MasterToken><?= Html::esc($this->masterToken) ?></tns:MasterToken>
+                                </tns:AuthAppInfo>
+                            </tns:AuthRequest>
+                        </ns:Message>
+                    </ns:GetMessageRequest>
+                </soapenv:Body>
+            </soapenv:Envelope>
+            <?php
+            $req = $this->httpClient->post('/open-api/AuthService/0.1', ob_get_clean(), [
+                'Content-Type' => 'application/xml'
+            ]);
 
-            /** @noinspection PhpUndefinedMethodInspection */
-            /** @var GetMessageResponse $messageResponse */
-            $messageResponse = $soapClient->GetMessage(new GetMessageRequest([
-                'Message' => new Message([
-                    'any' => new AuthRequest([
-                        'AuthAppInfo' => new AuthAppInfo([
-                            'MasterToken' => $this->masterToken
-                        ])
-                    ])
-                ])
-            ]));
+            Yii::debug('Запрос: ' . $req->toString(), __METHOD__);
+            $res = $req->send();
+            Yii::debug('Ответ: ' . $res->toString(), __METHOD__);
 
-            Yii::debug('Запрос: ' . $soapClient->__getLastRequest(), __METHOD__);
-            Yii::debug('Ответ: ' . $soapClient->__getLastResponse(), __METHOD__);
-
-            $xml = new SimpleXMLElement($messageResponse->Message->any ?? '');
-
-            // парсим ответ
-            $authResponse = new AuthResponse();
-            $authResponse->loadXml($xml->children('tns', true));
-
-            // получаем токен
-            $token = $authResponse->Result->Token ?? null;
-            if (empty($token)) {
-                throw new Exception('Ошибка получения токена: ' . ($authResponse->Fault->Message ?? ''));
+            if (! $res->isOk) {
+                throw new Exception('HTTP-error: ' . $res->statusCode);
             }
 
-            // сохраняем токен в кеше
-            Yii::$app->cache->set(
-                $key, $token, strtotime($authResponse->Result->ExpireTime) - time()
-            );
+            $xml = new SimpleXMLElement($res->content);
 
-            Yii::debug('Получен новый токен: ' . $token . ' до ' . $authResponse->Result->ExpireTime, __METHOD__);
+            /** @noinspection PhpUndefinedFieldInspection */
+            $xmlAuthResponse = $xml->children('soap', true)
+                ->Body->children('urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/types/1.0')
+                ->GetMessageResponse
+                ->Message->children('tns', true)
+                ->AuthResponse;
+
+            $token = (string)$xmlAuthResponse->Result->Token;
+            $expireTime = (string)$xmlAuthResponse->Result->ExpireTime;
+
+            if (empty($token)) {
+                throw new Exception('Ошибка авторизации: ' . ($xmlAuthResponse->Fault->Message ?? ''));
+            }
+
+            Yii::debug('Получен новый токен: ' . $token . ' до ' . $expireTime, __METHOD__);
+
+            // сохраняем в кеше
+            Yii::$app->cache->set(
+                $key, $token, $expireTime ? strtotime($expireTime) - time() : null
+            );
         }
 
         return $token;
@@ -193,17 +146,44 @@ class FNSClient extends Component
 
     public function checkTicket(TicketInfo $ticketInfo) : CheckTicketResponse
     {
-        $soapClient = $this->soapClient('/open-api/ais3/KktService/0.1?wsdl', $this->authToken());
+        ob_start();
+        ?>
+        <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                          xmlns:ns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageConsumerService/types/1.0"
+        >
+            <soapenv:Header/>
+            <soapenv:Body>
+                <ns:SendMessageRequest>
+                    <ns:Message>
+                        <tns:GetTicketRequest
+                                xmlns:tns="urn://x-artefacts-gnivc-ru/ais3/kkt/KktTicketService/types/1.0"
+                        >
+                            <tns:CheckTicketInfo>
+                                <tns:Sum><?= (int)$ticketInfo->Sum ?></tns:Sum>
+                                <tns:Date><?= Html::esc($ticketInfo->Date) ?></tns:Date>
+                                <tns:Fn><?= Html::esc($ticketInfo->Fn) ?></tns:Fn>
+                                <tns:TypeOperation><?= (int)$ticketInfo->TypeOperation ?></tns:TypeOperation>
+                                <tns:FiscalDocumentId><?= (int)$ticketInfo->FiscalDocumentId ?></tns:FiscalDocumentId>
+                                <tns:FiscalSign><?= (int)$ticketInfo->FiscalSign ?></tns:FiscalSign>
+                            </tns:CheckTicketInfo>
+                        </tns:GetTicketRequest>
+                    </ns:Message>
+                </ns:SendMessageRequest>
+            </soapenv:Body>
+        </soapenv:Envelope>
+        <?php
+        $req = $this->httpClient->post('/open-api/ais3/KktService/0.1?wsdl', ob_get_clean(), [
+            'FNS-OpenApi-Token' => $this->authToken(),
+            'Content-Type' => 'application/xml'
+        ]);
 
-        /** @noinspection PhpUndefinedMethodInspection */
-        /** @var SendMessageResponse $messageResponse */
-        $messageResponse = $soapClient->SendMessage(new SendMessageRequest([
-            'Message' => new Message([
-                'any' => new CheckTicketRequest([
-                    'CheckTicketInfo' => $ticketInfo
-                ])
-            ])
-        ]));
+        Yii::debug('Запрос: ' . $req->toString(), __METHOD__);
+        $res = $req->send();
+        Yii::debug('Ответ: ' . $res->toString(), __METHOD__);
+
+        if (! $res->isOk) {
+            throw new Exception('HTTP-error: ' . $res->statusCode);
+        }
 
         Yii::debug('Запрос: ' . $soapClient->__getLastRequest(), __METHOD__);
         Yii::debug('Ответ: ' . $soapClient->__getLastResponse(), __METHOD__);
