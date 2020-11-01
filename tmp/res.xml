@@ -1,0 +1,22 @@
+<!--
+  ~ @copyright 2019-2020 Dicr http://dicr.org
+  ~ @author Igor A Tarasov <develop@dicr.org>
+  ~ @license MIT
+  ~ @version 31.10.20 20:18:28
+  -->
+
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <GetMessageResponse xmlns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/types/1.0">
+            <Message>
+                <tns:AuthResponse
+                        xmlns:tns="urn://x-artefacts-gnivc-ru/ais3/kkt/AuthService/types/1.0">
+                    <tns:Result>
+                        <tns:Token>f4a760b21e2040958ceee482135022ae</tns:Token>
+                        <tns:ExpireTime>2020-10-31T21:16:03 +03:00</tns:ExpireTime>
+                    </tns:Result>
+                </tns:AuthResponse>
+            </Message>
+        </GetMessageResponse>
+    </soap:Body>
+</soap:Envelope>

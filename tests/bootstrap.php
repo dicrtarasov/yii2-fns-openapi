@@ -4,13 +4,11 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 18.10.20 08:45:27
+ * @version 31.10.20 20:11:31
  */
 declare(strict_types = 1);
 
 /** среда разработки */
-
-use yii\log\Dispatcher;
 
 defined('YII_ENV') || define('YII_ENV', 'dev');
 
@@ -28,8 +26,8 @@ new yii\console\Application([
         'urlManager' => [
             'hostInfo' => 'https://localhost'
         ],
+        'cache' => yii\caching\FileCache::class,
         'log' => [
-            'class' => Dispatcher::class,
             'targets' => [
                 [
                     'class' => yii\log\FileTarget::class,

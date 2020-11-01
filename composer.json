@@ -20,8 +20,9 @@
     "require": {
         "php": "~7.2",
         "ext-soap": "*",
+        "ext-simplexml": "*",
         "yiisoft/yii2": "~2.0",
-        "dicr/yii2-helper": "~3.7",
+        "dicr/yii2-helper": "~4.0",
         "dicr/yii2-validate": "~2.2"
     },
     "autoload": {

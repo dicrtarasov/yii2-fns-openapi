@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ @copyright 2019-2020 Dicr http://dicr.org
+  ~ @author Igor A Tarasov <develop@dicr.org>
+  ~ @license MIT
+  ~ @version 31.10.20 20:17:20
+  -->
+
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+                   xmlns:ns1="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/types/1.0">
+    <SOAP-ENV:Body>
+        <ns1:GetMessageRequest>
+            <ns1:Message>
+                <tns:AuthRequest xmlns:tns="urn://x-artefacts-gnivc-ru/ais3/kkt/AuthService/types/1.0">
+                    <tns:AuthAppInfo>
+                        <tns:MasterToken>
+                            8hUKp79w1d7nroMxv3Og0gmYjydfnrljK86Ov6UF3E1UC1cfBiwamIuLZiv7UwmWfPf9BkpryypKPSlmGkv485EONSYKvpQ7UUwX43c6kfzfTcu1BoPUIPn6yMTUliP6
+                        </tns:MasterToken>
+                    </tns:AuthAppInfo>
+                </tns:AuthRequest>
+            </ns1:Message>
+        </ns1:GetMessageRequest>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

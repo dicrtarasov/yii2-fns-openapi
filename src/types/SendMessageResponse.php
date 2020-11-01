@@ -3,22 +3,17 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 01.11.20 03:20:31
+ * @version 01.11.20 03:25:03
  */
 
 declare(strict_types = 1);
 namespace dicr\fns\openapi\types;
 
-use yii\base\Model;
-
 /**
- * Class GetMessageRequest
+ * Class SendMessageResponse
  */
-class GetMessageRequest extends Model
+class SendMessageResponse
 {
-    /** @var ?string */
+    /** @var string Идентификатор сообщения */
     public $MessageId;
-
-    /** @var ?Message */
-    public $Message;
 }

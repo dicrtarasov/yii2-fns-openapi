@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 01.11.20 02:09:14
+ * @version 01.11.20 02:10:27
  */
 
 declare(strict_types = 1);
@@ -12,14 +12,14 @@ namespace dicr\fns\openapi\types;
 use SimpleXMLElement;
 
 /**
- * Class AuthResponse
+ * Ответ на запрос проверки или информации чека.
  */
-class AuthResponse
+class GetTicketResponse
 {
-    /** @var ?AuthResponseResult */
+    /** @var GetTicketResult */
     public $Result;
 
-    /** @var ?AuthServiceFault */
+    /** @var ?KktTicketServiceFault */
     public $Fault;
 
     /**
@@ -30,12 +30,12 @@ class AuthResponse
     public function loadXml(SimpleXMLElement $xml) : void
     {
         if (isset($xml->Result)) {
-            $this->Result = new AuthResponseResult();
+            $this->Result = new GetTicketResult();
             $this->Result->loadXml($xml->Result);
         }
 
         if (isset($xml->Fault)) {
-            $this->Fault = new AuthServiceFault();
+            $this->Fault = new KktTicketServiceFault();
             $this->Fault->loadXml($xml->Fault);
         }
     }
