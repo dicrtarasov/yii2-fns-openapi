@@ -3,13 +3,14 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 01.11.20 02:10:35
+ * @version 01.11.20 07:51:34
  */
 
 declare(strict_types = 1);
 namespace dicr\fns\openapi\types;
 
 use SimpleXMLElement;
+use yii\helpers\Json;
 
 /**
  * Результат проверки чека.
@@ -28,7 +29,7 @@ class GetTicketResult
      */
     public $Message;
 
-    /** @var string содержимое чека */
+    /** @var array содержимое чека */
     public $Ticket;
 
     /**
@@ -47,7 +48,7 @@ class GetTicketResult
         }
 
         if (isset($xml->Ticket)) {
-            $this->Ticket = (string)$xml->Ticket;
+            $this->Ticket = Json::decode((string)$xml->Ticket);
         }
     }
 }
