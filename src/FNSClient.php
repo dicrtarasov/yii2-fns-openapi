@@ -3,15 +3,16 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 01.11.20 07:52:17
+ * @version 01.11.20 07:56:36
  */
 
 declare(strict_types = 1);
 namespace dicr\fns\openapi;
 
+use dicr\fns\openapi\types\CheckTicketInfo;
 use dicr\fns\openapi\types\CheckTicketResult;
+use dicr\fns\openapi\types\GetTicketInfo;
 use dicr\fns\openapi\types\GetTicketResult;
-use dicr\fns\openapi\types\TicketInfo;
 use dicr\helper\Html;
 use SimpleXMLElement;
 use Yii;
@@ -150,12 +151,12 @@ class FNSClient extends Component
     /**
      * Проверка чека.
      *
-     * @param TicketInfo $ticketInfo
+     * @param CheckTicketInfo $ticketInfo
      * @return CheckTicketResult
      * @throws Exception
      * @noinspection PhpUndefinedFieldInspection
      */
-    public function checkTicket(TicketInfo $ticketInfo) : CheckTicketResult
+    public function checkTicket(CheckTicketInfo $ticketInfo) : CheckTicketResult
     {
         // токен авторизации
         $token = $this->authToken();
@@ -268,12 +269,12 @@ class FNSClient extends Component
     /**
      * Получение данных чека.
      *
-     * @param TicketInfo $ticketInfo
+     * @param GetTicketInfo $ticketInfo
      * @return GetTicketResult данные чека
      * @throws Exception
      * @noinspection PhpUndefinedFieldInspection
      */
-    public function getTicket(TicketInfo $ticketInfo) : GetTicketResult
+    public function getTicket(GetTicketInfo $ticketInfo) : GetTicketResult
     {
         // токен авторизации
         $token = $this->authToken();
