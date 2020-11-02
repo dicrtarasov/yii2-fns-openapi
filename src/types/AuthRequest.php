@@ -3,14 +3,17 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 18.10.20 10:57:17
+ * @version 02.11.20 03:21:43
  */
 
 declare(strict_types = 1);
 namespace dicr\fns\openapi\types;
 
+use dicr\fns\openapi\FNSClient;
 use dicr\helper\Html;
 use yii\base\Model;
+
+use function ob_get_clean;
 
 /**
  * Class AuthRequest
@@ -27,8 +30,14 @@ class AuthRequest extends Model
      */
     public function __toString() : string
     {
-        return Html::xml('tns:AuthRequest', (string)$this->AuthAppInfo, [
-            'xmlns:tns' => 'urn://x-artefacts-gnivc-ru/ais3/kkt/AuthService/types/1.0'
+        ob_start();
+        echo Html::beginTag('tns:AuthRequest', [
+            'xmlns:tns' => FNSClient::XMLNS_AUTH
         ]);
+
+        echo (string)$this->AuthAppInfo;
+        echo Html::endTag('tns:AuthRequest');
+
+        return ob_get_clean();
     }
 }

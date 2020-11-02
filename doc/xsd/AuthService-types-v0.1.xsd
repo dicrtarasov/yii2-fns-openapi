@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn://x-artefacts-gnivc-ru/ais3/kkt/AuthService/types/1.0" elementFormDefault="qualified" targetNamespace="urn://x-artefacts-gnivc-ru/ais3/kkt/AuthService/types/1.0" version="1.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="urn://x-artefacts-gnivc-ru/ais3/kkt/AuthService/types/1.0" elementFormDefault="qualified" targetNamespace="urn://x-artefacts-gnivc-ru/ais3/kkt/AuthService/types/1.0" version="1.0">
 
   <xs:element name="AuthServiceFault" type="tns:AuthServiceFault"/>
 

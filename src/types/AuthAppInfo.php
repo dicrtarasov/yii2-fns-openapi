@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 18.10.20 10:56:53
+ * @version 01.11.20 23:36:15
  */
 
 declare(strict_types = 1);
@@ -11,6 +11,8 @@ namespace dicr\fns\openapi\types;
 
 use dicr\helper\Html;
 use yii\base\Model;
+
+use function ob_get_clean;
 
 /**
  * Class AuthAppInfo
@@ -27,8 +29,11 @@ class AuthAppInfo extends Model
      */
     public function __toString() : string
     {
-        return Html::xml('tns:AuthAppInfo',
-            Html::xml('tns:MasterToken', Html::esc($this->MasterToken))
-        );
+        ob_start();
+        echo Html::beginTag('tns:AuthAppInfo');
+        echo Html::xml('tns:MasterToken', Html::esc($this->MasterToken));
+        echo Html::endTag('tns:AuthAppInfo');
+
+        return ob_get_clean();
     }
 }

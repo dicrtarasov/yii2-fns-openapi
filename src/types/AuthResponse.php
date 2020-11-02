@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 01.11.20 02:09:14
+ * @version 02.11.20 00:31:42
  */
 
 declare(strict_types = 1);
@@ -26,17 +26,20 @@ class AuthResponse
      * Загрузка из XML.
      *
      * @param SimpleXMLElement $xml
+     * @return static
      */
-    public function loadXml(SimpleXMLElement $xml) : void
+    public static function fromXml(SimpleXMLElement $xml) : self
     {
+        $self = new static();
+
         if (isset($xml->Result)) {
-            $this->Result = new AuthResponseResult();
-            $this->Result->loadXml($xml->Result);
+            $self->Result = AuthResponseResult::fromXml($xml->Result);
         }
 
         if (isset($xml->Fault)) {
-            $this->Fault = new AuthServiceFault();
-            $this->Fault->loadXml($xml->Fault);
+            $self->Fault = AuthServiceFault::fromXml($xml->Fault);
         }
+
+        return $self;
     }
 }

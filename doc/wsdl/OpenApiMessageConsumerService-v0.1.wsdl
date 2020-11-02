@@ -1,9 +1,18 @@
 <?xml version="1.0" ?>
-<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/1.0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/types/1.0" name="OpenApiMessageConsumerService" targetNamespace="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/1.0">
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:tns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/1.0"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:ns1="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/types/1.0"
+                  name="OpenApiMessageConsumerService"
+                  targetNamespace="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/1.0">
 
   <wsdl:types>
 
-    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/types/1.0" elementFormDefault="qualified" targetNamespace="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/types/1.0" version="1.0">
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+               xmlns:tns="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/types/1.0"
+               elementFormDefault="qualified"
+               targetNamespace="urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiMessageConsumerService/types/1.0" version="1.0">
 	  
       <xs:element name="GetMessageRequest">
         <xs:complexType>

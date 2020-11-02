@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 01.11.20 02:10:41
+ * @version 02.11.20 03:28:31
  */
 
 declare(strict_types = 1);
@@ -23,11 +23,14 @@ class KktTicketServiceFault
      * Загрузка из XML.
      *
      * @param SimpleXMLElement $xml
+     * @return static
+     * @noinspection PhpUndefinedFieldInspection
      */
-    public function loadXml(SimpleXMLElement $xml) : void
+    public static function fromXml(SimpleXMLElement $xml) : self
     {
-        if (isset($xml->Message)) {
-            $this->Message = (string)$xml->Message;
-        }
+        $self = new static();
+        $self->Message = (string)$xml->Message;
+
+        return $self;
     }
 }

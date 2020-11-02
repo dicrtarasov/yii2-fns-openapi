@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 01.11.20 02:09:21
+ * @version 01.11.20 23:44:19
  */
 
 declare(strict_types = 1);
@@ -23,11 +23,16 @@ class AuthServiceFault
      * Загрузка из XML.
      *
      * @param SimpleXMLElement $xml
+     * @return static
      */
-    public function loadXml(SimpleXMLElement $xml) : void
+    public static function fromXml(SimpleXMLElement $xml) : self
     {
+        $self = new static();
+
         if (isset($xml->Message)) {
-            $this->Message = (string)$xml->Message;
+            $self->Message = (string)$xml->Message;
         }
+
+        return $self;
     }
 }

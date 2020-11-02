@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 01.11.20 07:51:34
+ * @version 02.11.20 03:28:31
  */
 
 declare(strict_types = 1);
@@ -36,19 +36,20 @@ class GetTicketResult
      * Загрузка из XML.
      *
      * @param SimpleXMLElement $xml
+     * @return static
+     * @noinspection PhpUndefinedFieldInspection
      */
-    public function loadXml(SimpleXMLElement $xml) : void
+    public static function fromXml(SimpleXMLElement $xml) : self
     {
-        if (isset($xml->Code)) {
-            $this->Code = (int)$xml->Code;
+        $self = new static();
+        $self->Code = (int)$xml->Code;
+        $self->Message = (string)$xml->Message;
+
+        $ticket = (string)$xml->Ticket;
+        if (! empty($ticket)) {
+            $self->Ticket = Json::decode($ticket);
         }
 
-        if (isset($xml->Message)) {
-            $this->Message = (string)$xml->Message;
-        }
-
-        if (isset($xml->Ticket)) {
-            $this->Ticket = Json::decode((string)$xml->Ticket);
-        }
+        return $self;
     }
 }

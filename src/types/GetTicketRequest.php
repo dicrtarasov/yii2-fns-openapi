@@ -3,12 +3,13 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 01.11.20 05:16:43
+ * @version 02.11.20 03:22:51
  */
 
 declare(strict_types = 1);
 namespace dicr\fns\openapi\types;
 
+use dicr\fns\openapi\FNSClient;
 use dicr\helper\Html;
 use yii\base\Model;
 
@@ -32,7 +33,7 @@ class GetTicketRequest extends Model
     {
         ob_start();
         echo Html::beginTag('tns:GetTicketRequest', [
-            'xmlns:tns' => 'urn://x-artefacts-gnivc-ru/ais3/kkt/KktTicketService/types/1.0'
+            'xmlns:tns' => FNSClient::XMLNS_KKT
         ]);
 
         if (! empty($this->GetTicketInfo)) {

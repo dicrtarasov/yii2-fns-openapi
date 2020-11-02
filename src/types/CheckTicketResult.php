@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 01.11.20 02:09:45
+ * @version 02.11.20 01:30:41
  */
 
 declare(strict_types = 1);
@@ -32,15 +32,15 @@ class CheckTicketResult
      * Загрузка из XML.
      *
      * @param SimpleXMLElement $xml
+     * @return static
+     * @noinspection PhpUndefinedFieldInspection
      */
-    public function loadXml(SimpleXMLElement $xml) : void
+    public static function fromXml(SimpleXMLElement $xml) : self
     {
-        if (isset($xml->Code)) {
-            $this->Code = (int)$xml->Code;
-        }
+        $self = new static();
+        $self->Code = (int)$xml->Code;
+        $self->Message = (string)$xml->Message;
 
-        if (isset($xml->Message)) {
-            $this->Message = (string)$xml->Message;
-        }
+        return $self;
     }
 }

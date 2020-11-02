@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 01.11.20 08:49:28
+ * @version 02.11.20 03:39:30
  */
 
 declare(strict_types = 1);
@@ -17,6 +17,8 @@ use PHPUnit\Framework\TestCase;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
+
+use function print_r;
 
 /**
  * Class SberbankModuleTest
@@ -59,6 +61,16 @@ class NFSClientTest extends TestCase
         'FiscalSign' => 957304760
     ];
 
+    /** @var array данные из примера в документации */
+    public const TICKET_INFO4 = [
+        'Sum' => 12500,
+        'Date' => '2020-04-23T12:08:00',
+        'Fn' => '9287440300077658',
+        'TypeOperation' => TypeOperation::INCOME,
+        'FiscalDocumentId' => 166865,
+        'FiscalSign' => 4264393268
+    ];
+
     /**
      * Клиент FNS.
      *
@@ -88,9 +100,9 @@ class NFSClientTest extends TestCase
     public function testCheck() : void
     {
         $fnsClient = self::client();
-        $checkTicketResult = $fnsClient->checkTicket(new CheckTicketInfo(self::TICKET_INFO1));
+        $checkTicketResult = $fnsClient->checkTicket(new CheckTicketInfo(self::TICKET_INFO3));
+        self::assertNotEmpty($checkTicketResult->Code);
 
-        self::assertSame(200, $checkTicketResult->Code);
         echo 'Код: ' . $checkTicketResult->Code . "\n";
         echo 'Сообщение: ' . $checkTicketResult->Message . "\n";
     }
@@ -101,7 +113,12 @@ class NFSClientTest extends TestCase
     public function testGet() : void
     {
         $fnsClient = self::client();
-        $checkTicketResult = $fnsClient->getTicket(new GetTicketInfo(self::TICKET_INFO1));
-        self::assertIsArray($checkTicketResult->Ticket);
+        $getTicketResult = $fnsClient->getTicket(new GetTicketInfo(self::TICKET_INFO3));
+
+        self::assertNotEmpty($getTicketResult->Code);
+
+        echo 'Код: ' . $getTicketResult->Code . "\n";
+        echo 'Сообщение: ' . $getTicketResult->Message . "\n";
+        echo 'Чек: ' . print_r($getTicketResult->Ticket, true) . "\n";
     }
 }

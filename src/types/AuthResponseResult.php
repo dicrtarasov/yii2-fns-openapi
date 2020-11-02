@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 01.11.20 02:09:09
+ * @version 02.11.20 00:18:50
  */
 
 declare(strict_types = 1);
@@ -26,15 +26,20 @@ class AuthResponseResult
      * Загрузка из XML.
      *
      * @param SimpleXMLElement $xml
+     * @return static
      */
-    public function loadXml(SimpleXMLElement $xml) : void
+    public static function fromXml(SimpleXMLElement $xml) : self
     {
+        $self = new static();
+
         if (isset($xml->Token)) {
-            $this->Token = (string)$xml->Token;
+            $self->Token = (string)$xml->Token;
         }
 
         if (isset($xml->ExpireTime)) {
-            $this->ExpireTime = (string)$xml->ExpireTime;
+            $self->ExpireTime = (string)$xml->ExpireTime;
         }
+
+        return $self;
     }
 }

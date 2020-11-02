@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 01.11.20 02:10:27
+ * @version 02.11.20 01:35:45
  */
 
 declare(strict_types = 1);
@@ -26,17 +26,20 @@ class GetTicketResponse
      * Загрузка из XML.
      *
      * @param SimpleXMLElement $xml
+     * @return static
      */
-    public function loadXml(SimpleXMLElement $xml) : void
+    public static function fromXml(SimpleXMLElement $xml) : self
     {
+        $self = new static();
+
         if (isset($xml->Result)) {
-            $this->Result = new GetTicketResult();
-            $this->Result->loadXml($xml->Result);
+            $self->Result = GetTicketResult::fromXml($xml->Result);
         }
 
         if (isset($xml->Fault)) {
-            $this->Fault = new KktTicketServiceFault();
-            $this->Fault->loadXml($xml->Fault);
+            $self->Fault = KktTicketServiceFault::fromXml($xml->Fault);
         }
+
+        return $self;
     }
 }
