@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 02.11.20 03:39:30
+ * @version 02.11.20 13:24:39
  */
 
 declare(strict_types = 1);
@@ -61,15 +61,28 @@ class NFSClientTest extends TestCase
         'FiscalSign' => 957304760
     ];
 
-    /** @var array данные из примера в документации */
+    /** @var array чек клиента */
     public const TICKET_INFO4 = [
-        'Sum' => 12500,
-        'Date' => '2020-04-23T12:08:00',
-        'Fn' => '9287440300077658',
+        'Sum' => 200000,
+        'Date' => '2020-10-14T09:45:00',
+        'Fn' => '9281000100087974',
         'TypeOperation' => TypeOperation::INCOME,
-        'FiscalDocumentId' => 166865,
-        'FiscalSign' => 4264393268
+        'FiscalDocumentId' => 19469,
+        'FiscalSign' => 4159188716
     ];
+
+    /** @var array чек клиента */
+    public const TICKET_INFO5 = [
+        'Sum' => 99100,
+        'Date' => '2020-10-03T15:27:00',
+        'Fn' => '9280440300430432',
+        'TypeOperation' => TypeOperation::INCOME,
+        'FiscalDocumentId' => 29127,
+        'FiscalSign' => 266252041
+    ];
+
+    /** @var array */
+    public const TICKET_INFO = self::TICKET_INFO4;
 
     /**
      * Клиент FNS.
@@ -100,7 +113,7 @@ class NFSClientTest extends TestCase
     public function testCheck() : void
     {
         $fnsClient = self::client();
-        $checkTicketResult = $fnsClient->checkTicket(new CheckTicketInfo(self::TICKET_INFO3));
+        $checkTicketResult = $fnsClient->checkTicket(new CheckTicketInfo(self::TICKET_INFO));
         self::assertNotEmpty($checkTicketResult->Code);
 
         echo 'Код: ' . $checkTicketResult->Code . "\n";
@@ -113,7 +126,7 @@ class NFSClientTest extends TestCase
     public function testGet() : void
     {
         $fnsClient = self::client();
-        $getTicketResult = $fnsClient->getTicket(new GetTicketInfo(self::TICKET_INFO3));
+        $getTicketResult = $fnsClient->getTicket(new GetTicketInfo(self::TICKET_INFO));
 
         self::assertNotEmpty($getTicketResult->Code);
 
