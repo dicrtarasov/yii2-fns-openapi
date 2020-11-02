@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 02.11.20 03:32:20
+ * @version 02.11.20 03:46:52
  */
 
 declare(strict_types = 1);
@@ -270,7 +270,7 @@ class FNSClient extends Component
      * @return string токен
      * @throws Exception
      */
-    public function authToken() : string
+    private function authToken() : string
     {
         $key = [__METHOD__, $this->url, $this->masterToken];
 
