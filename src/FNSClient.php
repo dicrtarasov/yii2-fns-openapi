@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 02.11.20 03:46:52
+ * @version 02.11.20 03:49:53
  */
 
 declare(strict_types = 1);
@@ -216,7 +216,7 @@ class FNSClient extends Component
         GetMessageRequest $getMessageRequest,
         ?string $token = null
     ) : GetMessageResponse {
-        $getMessageRequest->nsUri = self::XMLNS_SYNC;
+        $getMessageRequest->xmlns = self::XMLNS_SYNC;
 
         $xml = $this->soapCall($url, $getMessageRequest, $token);
 
@@ -240,7 +240,7 @@ class FNSClient extends Component
         GetMessageRequest $getMessageRequest,
         ?string $token = null
     ) : GetMessageResponse {
-        $getMessageRequest->nsUri = self::XMLNS_ASYNC;
+        $getMessageRequest->xmlns = self::XMLNS_ASYNC;
 
         for ($i = 0; $i < $this->asyncRetries; $i++) {
             sleep($this->asyncPause);

@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 02.11.20 03:27:14
+ * @version 02.11.20 03:49:53
  */
 
 declare(strict_types = 1);
@@ -24,7 +24,7 @@ class GetMessageRequest extends Model
     public $Message;
 
     /** @var string ns URI */
-    public $nsUri;
+    public $xmlns;
 
     /**
      * @return string
@@ -33,7 +33,7 @@ class GetMessageRequest extends Model
     {
         ob_start();
         echo Html::beginTag('ns:GetMessageRequest', [
-            'xmlns:ns' => $this->nsUri
+            'xmlns:ns' => $this->xmlns
         ]);
 
         if (! empty($this->MessageId)) {
