@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 02.11.20 13:24:39
+ * @version 02.11.20 16:03:57
  */
 
 declare(strict_types = 1);
@@ -82,7 +82,7 @@ class NFSClientTest extends TestCase
     ];
 
     /** @var array */
-    public const TICKET_INFO = self::TICKET_INFO4;
+    public const TICKET_INFO = self::TICKET_INFO5;
 
     /**
      * Клиент FNS.
